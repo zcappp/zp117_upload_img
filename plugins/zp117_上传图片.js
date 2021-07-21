@@ -7,7 +7,7 @@ function render(ref) {
     return <React.Fragment>
         <input onChange={e => onChange(ref, e)} type="file" accept="image/*"/>
         {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div>{svg}<label>{ref.props.label || "上传图片"}</label></div>)}
-        {(ref.file || img) && <img src={ref.file || img + "?x-oss-process=image/resize,m_fill,h_300,w_300"}/>}
+        {(ref.file || img) && <img src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
     </React.Fragment>
 }
 
@@ -64,7 +64,7 @@ $plugin({
     }, {
         prop: "label",
         type: "text",
-        label: "[上传图片]文本"
+        label: "【上传图片】文本"
     }],
     render,
     css
