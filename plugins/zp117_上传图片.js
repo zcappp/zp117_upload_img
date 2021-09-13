@@ -20,20 +20,22 @@ function onChange(ref, e) {
     ref.progress = "0%"
     ref.render()
     ref.container.classList.add("uploading")
-    exc('upload(file, onProgress, onSuccess, onError)', {
+    exc('upload(file, option)', {
         file,
-        onProgress: r => {
-            ref.progress = r.percent + "%"
-            ref.render()
-        },
-        onSuccess: r => {
-            ref.setForm(ref.props.dbf, r.url)
-            if (ref.props.onSuccess) exc(ref.props.onSuccess, { ...ref.ctx, ...r }, () => ref.exc("render()"))
-            clean(ref)
-        },
-        onError: r => {
-            exc(`alert("上传出错了", r.error)`, { r })
-            clean(ref)
+        option: {
+            onProgress: r => {
+                ref.progress = r.percent + "%"
+                ref.render()
+            },
+            onSuccess: r => {
+                ref.setForm(ref.props.dbf, r.url)
+                if (ref.props.onSuccess) exc(ref.props.onSuccess, { ...ref.ctx, ...r }, () => ref.exc("render()"))
+                clean(ref)
+            },
+            onError: r => {
+                exc(`alert("上传出错了", r.error)`, { r })
+                clean(ref)
+            }
         }
     })
 }
