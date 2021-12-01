@@ -29,7 +29,7 @@ function onChange(ref, e) {
             },
             onSuccess: r => {
                 ref.setForm(ref.props.dbf, r.url)
-                if (ref.props.onSuccess) exc(ref.props.onSuccess, { ...ref.ctx, ...r }, () => ref.exc("render()"))
+                if (ref.props.onSuccess) exc(ref.props.onSuccess, { ...ref.ctx, $ext: ref.ctx, ...r }, () => ref.exc("render()"))
                 clean(ref)
             },
             onError: r => {
