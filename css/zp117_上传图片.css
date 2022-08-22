@@ -1,16 +1,17 @@
 module.exports=`
-
 /**/
 
 .zp117 {
-    overflow: hidden;
     position: relative;
     width: 152px;
     height: 152px;
-    margin: 1px;
     border: 1px solid rgb(221, 221, 221);
     border-radius: 2px;
     display: inline-block;
+}
+
+.zp117input {
+    overflow: hidden;
 }
 
 .zp117 input {
@@ -34,7 +35,7 @@ module.exports=`
     margin: auto;
 }
 
-.zp117 svg {
+.zp117camera {
     position: absolute;
     top: 35%;
     left: 50%;
@@ -68,7 +69,7 @@ module.exports=`
     animation: loading 2s infinite linear;
 }
 
-.zp117.uploading > div {
+.zp117.uploading>div {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -80,5 +81,29 @@ module.exports=`
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+.zp117rm {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 54px;
+    z-index: 99;
+    cursor: pointer;
+
+    line-height: 9px;
+    padding: 3px;
+    width: 13px;
+    height: 13px;
+    background-color: rgba(0, 0, 0, .3);
+    border-radius: 50%;
+    color: #fff;
+}
+
+.zdesktop .zp117rm {
+    display: none;
+}
+
+.zdesktop .zp117:hover .zp117rm {
+    display: block;
+}
 
 `

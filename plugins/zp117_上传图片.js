@@ -5,9 +5,10 @@ function render(ref) {
     if (!ref.props.dbf) return <div>请配置表单字段</div>
     let img = ref.getForm(ref.props.dbf)
     return <React.Fragment>
-        <input onChange={e => onChange(ref, e)} type="file" accept="image/*"/>
-        {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div>{svg}<label>{ref.props.label || "上传图片"}</label></div>)}
+        <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
+        {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div>{camera}<label>{ref.props.label || "上传图片"}</label></div>)}
         {(ref.file || img) && <img src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
+        {!!img && <i className="zp117rm" onClick={e => {e.stopPropagation(); ref.setForm(ref.props.dbf, "")}}>{remove}</i>}
     </React.Fragment>
 }
 
@@ -72,4 +73,5 @@ $plugin({
     css
 })
 
-const svg = <svg className="zsvg" viewBox="0 0 1024 1024"><path d="M384 128l-78.933333 85.333333L170.666667 213.333333c-46.933333 0-85.333333 38.4-85.333333 85.333333l0 512c0 46.933333 38.4 85.333333 85.333333 85.333333l682.666667 0c46.933333 0 85.333333-38.4 85.333333-85.333333L938.666667 298.666667c0-46.933333-38.4-85.333333-85.333333-85.333333l-134.4 0L640 128 384 128zM512 768c-117.333333 0-213.333333-96-213.333333-213.333333s96-213.333333 213.333333-213.333333 213.333333 96 213.333333 213.333333S629.333333 768 512 768zM512 554.666667m-136.533333 0a6.4 6.4 0 1 0 273.066667 0 6.4 6.4 0 1 0-273.066667 0Z"/></svg>
+const camera = <svg className="zsvg zp117camera" viewBox="0 0 1024 1024"><path d="M384 128l-78.933333 85.333333L170.666667 213.333333c-46.933333 0-85.333333 38.4-85.333333 85.333333l0 512c0 46.933333 38.4 85.333333 85.333333 85.333333l682.666667 0c46.933333 0 85.333333-38.4 85.333333-85.333333L938.666667 298.666667c0-46.933333-38.4-85.333333-85.333333-85.333333l-134.4 0L640 128 384 128zM512 768c-117.333333 0-213.333333-96-213.333333-213.333333s96-213.333333 213.333333-213.333333 213.333333 96 213.333333 213.333333S629.333333 768 512 768zM512 554.666667m-136.533333 0a6.4 6.4 0 1 0 273.066667 0 6.4 6.4 0 1 0-273.066667 0Z"/></svg>
+const remove = <svg className="zsvg" viewBox="64 64 896 896"><path d="M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 0 0 203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z"/></svg>
