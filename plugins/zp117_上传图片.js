@@ -2,11 +2,11 @@ import React from "react"
 import css from "../css/zp117_上传图片.css"
 
 function render(ref) {
-    if (!ref.props.dbf) return <div>请配置表单字段</div>
+    if (!ref.props.dbf) return <div>{camera}<label>请配置表单字段</label></div>
     let img = ref.getForm(ref.props.dbf)
     return <React.Fragment>
         <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
-        {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div>{camera}<label>{ref.props.label || "上传图片"}</label></div>)}
+        {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div className={ref.props.noLabel ? "noLabel" : ""}>{camera}<label>{ref.props.noLabel ? "" : (ref.props.label || "上传图片")}</label></div>)}
         {(ref.file || img) && <img src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
         {!!img && <svg onClick={e => {e.stopPropagation(); ref.setForm(ref.props.dbf, ""); ref.exc('render()')}} className="zp117rm zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>}
         {!!ref.props.url && <span onClick={() => url(ref)}>URL</span>}
@@ -106,6 +106,10 @@ $plugin({
         prop: "label",
         type: "text",
         label: "【上传图片】文本"
+    }, {
+        prop: "noLabel",
+        type: "switch",
+        label: "不显示文本"
     }, {
         prop: "url",
         type: "switch",
