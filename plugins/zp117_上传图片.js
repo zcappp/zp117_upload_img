@@ -7,7 +7,7 @@ function render(ref) {
     return <React.Fragment>
         <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
         {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div className={ref.props.noLabel ? "noLabel" : ""}>{camera}<label>{ref.props.noLabel ? "" : (ref.props.label || "上传图片")}</label></div>)}
-        {(ref.file || img) && <img src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
+        {(ref.file || img) && <img onClick={() => showImg(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
         {!!img && <svg onClick={e => {e.stopPropagation(); ref.setForm(ref.props.dbf, ""); ref.exc('render()')}} className="zp117rm zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>}
         {!!ref.props.url && <span onClick={() => url(ref)}>URL</span>}
         {ref.modal}
@@ -66,6 +66,19 @@ function url(ref) {
     </div>
     ref.render()
     setTimeout(() => $(".zp117 .zmodal input").focus(), 9)
+}
+
+function showImg(ref, img) {
+    if (!img) return
+    ref.modal = <div className="zmodals">
+        <div className="zmask" onClick={() => close(ref)}/>
+        <div className="zmodal">
+            <svg onClick={() => close(ref)} className="zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>
+            <div className="zmodal-hd">{ref.props.dbf}</div>
+            <div className="zcenter" style={{minHeight:"200px"}}><img src={img}/></div>
+        </div>
+    </div>
+    ref.render()
 }
 
 function close(ref) {

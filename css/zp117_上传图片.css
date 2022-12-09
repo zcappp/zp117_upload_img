@@ -27,16 +27,20 @@ module.exports=`
     font-size: 0;
 }
 
-.zp117 img {
+.zp117 > img {
     position: absolute;
     top: 0px;
     left: 0px;
     bottom: 0px;
     right: 0px;
+    z-index: 10;
+    cursor: pointer;
     margin: auto;
+    max-height: 100%;
+    max-width: 100%;
 }
 
-.zp117 span {
+.zp117 > span {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -128,13 +132,13 @@ module.exports=`
 .zp117 .zmodal input {
     width: 100%;
 }
-
+/*
 .zdesktop .zp117rm {
     display: none;
 }
 
 .zdesktop .zp117:hover .zp117rm {
     display: block;
-}
+}*/
 
 `
