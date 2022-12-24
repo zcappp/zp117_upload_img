@@ -109,7 +109,7 @@ module.exports=`
     top: -8px;
     right: -8px;
     width: 54px;
-    z-index: 99;
+    z-index: 90;
     cursor: pointer;
     line-height: 9px;
     padding: 3px;
