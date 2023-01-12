@@ -6,10 +6,10 @@ function render(ref) {
     let img = ref.getForm(ref.props.dbf)
     return <React.Fragment>
         <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
-        {ref.file ? <div>{ref.progress}</div> : (img ? "" : <div className={ref.props.noLabel ? "noLabel" : ""}>{camera}<label>{ref.props.noLabel ? "" : (ref.props.label || "上传图片")}</label></div>)}
-        {(ref.file || img) && <img onClick={() => showImg(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
+        {ref.file ? <div className="zp117progress">{ref.progress}</div> : (img ? "" : <div className={ref.props.noLabel ? "noLabel" : ""}>{camera}<label>{ref.props.noLabel ? "" : (ref.props.label || "上传图片")}</label></div>)}
+        {(ref.file || img) && <img onClick={() => popImg(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
         {!!img && <svg onClick={e => {e.stopPropagation(); ref.setForm(ref.props.dbf, ""); ref.exc('render()')}} className="zp117rm zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>}
-        {!!ref.props.url && <span onClick={() => url(ref)}>URL</span>}
+        {!!ref.props.url && !ref.file && <span onClick={() => popUrl(ref)}>URL</span>}
         {ref.modal}
     </React.Fragment>
 }
@@ -51,7 +51,7 @@ function clean(ref) {
     ref.container.classList.remove("uploading")
 }
 
-function url(ref) {
+function popUrl(ref) {
     ref.modal = <div className="zmodals">
         <div className="zmask" onClick={() => close(ref)}/>
         <div className="zmodal">
@@ -68,7 +68,7 @@ function url(ref) {
     setTimeout(() => $(".zp117 .zmodal input").focus(), 9)
 }
 
-function showImg(ref, img) {
+function popImg(ref, img) {
     if (!img) return
     ref.modal = <div className="zmodals">
         <div className="zmask" onClick={() => close(ref)}/>
