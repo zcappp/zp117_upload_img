@@ -1,5 +1,5 @@
 import React from "react"
-import css from "../css/zp117_上传图片.css"
+import css from "./zp117_上传图片.css"
 
 function render(ref) {
     if (!ref.props.dbf) return <div>{camera}<label>请配置表单字段</label></div>
