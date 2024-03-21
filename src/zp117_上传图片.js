@@ -2,23 +2,25 @@ import React from "react"
 import css from "./zp117_上传图片.css"
 
 function render(ref) {
-    if (!ref.props.dbf) return <div>{camera}<label>请配置表单字段</label></div>
-    let img = ref.getForm(ref.props.dbf)
+    const { props, getForm } = ref
+    if (!getForm) return <div>{camera}<label>请置于表单容器中</label></div>
+    if (!props.dbf) return <div>{camera}<label>请配置表单字段</label></div>
+    let img = getForm(props.dbf)
     return <React.Fragment>
         <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
-        {ref.file ? <div className="zp117progress">{ref.progress}</div> : (img ? "" : <div className={ref.props.noLabel ? "noLabel" : ""}>{camera}<label>{ref.props.noLabel ? "" : (ref.props.label || "上传图片")}</label></div>)}
+        {ref.file ? <div className="zp117progress">{ref.progress}</div> : (img ? "" : <div className={props.noLabel ? "noLabel" : ""}>{camera}<label>{props.noLabel ? "" : (props.label || "上传图片")}</label></div>)}
         {(ref.file || img) && <img onClick={() => popImg(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
-        {!!img && <svg onClick={e => {e.stopPropagation(); ref.setForm(ref.props.dbf, ""); ref.exc('render()')}} className="zp117rm zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>}
-        {!!ref.props.url && !ref.file && <span onClick={() => popUrl(ref)}>URL</span>}
+        {!!img && <svg onClick={e => {e.stopPropagation(); ref.setForm(props.dbf, ""); ref.exc('render()')}} className="zp117rm zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>}
+        {!!props.url && !ref.file && <span onClick={() => popUrl(ref)}>URL</span>}
         {ref.modal}
     </React.Fragment>
 }
 
 function onChange(ref, e) {
-    const { exc } = ref
+    const { props, exc } = ref
     const file = e.target.files[0]
     if (!file || !file.name) return exc('warn("请选择图片文件")')
-    if (file.size / 1048576 > (ref.props.max || 5)) return exc(`warn("文件太大, 请压缩至${ref.props.max || 5}M以下")`)
+    if (file.size / 1048576 > (props.max || 5)) return exc(`warn("文件太大, 请压缩至${props.max || 5}M以下")`)
     ref.file = URL.createObjectURL(file)
     ref.progress = "0%"
     ref.render()
@@ -31,8 +33,8 @@ function onChange(ref, e) {
                 ref.render()
             },
             onSuccess: r => {
-                ref.setForm(ref.props.dbf, r.url)
-                if (ref.props.onSuccess) exc(ref.props.onSuccess, { ...ref.ctx, $ext_ctx: ref.ctx, $val: r.url, ...r }, () => ref.exc("render()"))
+                ref.setForm(props.dbf, r.url)
+                if (props.onSuccess) exc(props.onSuccess, { ...ref.ctx, $ext_ctx: ref.ctx, $val: r.url, ...r }, () => ref.exc("render()"))
                 clean(ref)
             },
             onError: r => {
@@ -87,14 +89,14 @@ function close(ref) {
 }
 
 function upload(ref) {
-    const { exc } = ref
+    const { props, exc } = ref
     let url = $(".zp117 .zmodal input").value
     if (!url) return exc('alert("请输入图片URL")')
     exc('$resource.uploads(urls, "i")', { urls: [url] }, r => {
         if (!r || r.ng.length) exc(`alert("上传出错了", reason)`, { reason: r ? r.ng[0].reason : "" })
         if (r.arr.length) {
-            ref.setForm(ref.props.dbf, r.arr[0].url)
-            if (ref.props.onSuccess) exc(ref.props.onSuccess, { ...ref.ctx, $ext_ctx: ref.ctx, ...r.arr[0] }, () => exc("render()"))
+            ref.setForm(props.dbf, r.arr[0].url)
+            if (props.onSuccess) exc(props.onSuccess, { ...ref.ctx, $ext_ctx: ref.ctx, $val: r.arr[0].url, ...r.arr[0] }, () => exc("render()"))
             close(ref)
         }
     })
@@ -109,7 +111,8 @@ $plugin({
     }, {
         prop: "onSuccess",
         type: "exp",
-        label: "onSuccess表达式"
+        label: "onSuccess表达式",
+        ph: "$val"
     }, {
         prop: "max",
         type: "number",
