@@ -9,7 +9,7 @@ function render(ref) {
     return <React.Fragment>
         <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
         {ref.file ? <div className="zp117progress">{ref.progress}</div> : (img ? "" : <div className={props.noLabel ? "noLabel" : ""}>{camera}<label>{props.noLabel ? "" : (props.label || "上传图片")}</label></div>)}
-        {(ref.file || img) && <img onClick={() => popImg(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
+        {(ref.file || img) && <img onClick={() => preview(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
         {!!img && <svg onClick={e => {e.stopPropagation(); ref.setForm(props.dbf, ""); ref.exc('render()')}} className="zp117rm zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>}
         {!!props.url && !ref.file && <span onClick={() => popUrl(ref)}>URL</span>}
         {ref.modal}
@@ -57,8 +57,8 @@ function popUrl(ref) {
     ref.modal = <div className="zmodals">
         <div className="zmask" onClick={() => close(ref)}/>
         <div className="zmodal">
-            <svg onClick={() => close(ref)} className="zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>
-            <div className="hd">通过URL上传</div>
+            <svg onClick={() => close(ref)} className="zsvg x" viewBox="64 64 896 896"><path d={remove}/></svg>
+            <h3 className="hd">通过URL上传</h3>
             <div className="bd"><input placeholder="输入图片URL" className="zinput"/></div>
             <div className="ft">
                 <div className="zbtn" onClick={() => close(ref)}>取消</div>
@@ -67,20 +67,24 @@ function popUrl(ref) {
         </div>
     </div>
     ref.render()
-    setTimeout(() => $(".zp117 .zmodal input").focus(), 9)
+    setTimeout(() => {
+        $(".zp117 .zmodals").classList.add("open")
+        $(".zp117 .zmodal input").focus()
+    }, 99)
 }
 
-function popImg(ref, img) {
+function preview(ref, img) {
     if (!img) return
     ref.modal = <div className="zmodals">
         <div className="zmask" onClick={() => close(ref)}/>
         <div className="zmodal">
-            <svg onClick={() => close(ref)} className="zsvg" viewBox="64 64 896 896"><path d={remove}/></svg>
-            <div className="hd">{ref.props.dbf}</div>
+            <svg onClick={() => close(ref)} className="zsvg x" viewBox="64 64 896 896"><path d={remove}/></svg>
+            <h3 className="hd">{ref.props.dbf}</h3>
             <div className="zcenter" style={{minHeight:"200px"}}><img src={img}/></div>
         </div>
     </div>
     ref.render()
+    setTimeout(() => $(".zp117 .zmodals").classList.add("open"), 99)
 }
 
 function close(ref) {
