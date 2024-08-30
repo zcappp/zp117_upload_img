@@ -12,7 +12,7 @@ function render(ref) {
         img = ref.getForm(dbf)
     }
     return <React.Fragment>
-        <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>
+        {!img && <div className="zp117input"><input onChange={e => onChange(ref, e)} type="file" accept="image/*"/></div>}
         {!img && !ref.file && <div className={props.noLabel ? "zp117noLabel" : ""}><span className="zphoto"><span/></span><label>{props.noLabel ? "" : (props.label || "上传图片")}</label></div>}
         {(ref.file || img) && <img onClick={() => preview(ref, img)} src={ref.file || (img.endsWith("svg") || img.endsWith("ico") ? img : img + "?x-oss-process=image/resize,m_fill,h_300,w_300")}/>}
         {!!ref.file && <div className="zp117progress">{ref.progress}</div>}
